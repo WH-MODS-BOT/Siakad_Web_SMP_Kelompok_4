@@ -1,0 +1,69 @@
+sekarang buatkan pada form Jadwal pelajaran menampilkan tabel dan code sql dibawah ini :
+
+ CREATE TABLE `japel` (
+
+  `id_japel` int(11) NOT NULL,
+
+  `id_guru` varchar(10) DEFAULT NULL,
+
+  `id_mapel` int(11) DEFAULT NULL,
+
+  `id_kelas` int(11) DEFAULT NULL,
+
+  `hari` varchar(20) DEFAULT NULL,
+
+  `jam_mulai` time DEFAULT NULL,
+
+  `jam_selesai` time DEFAULT NULL,
+
+  `id_tahun` int(11) NOT NULL,
+
+  `semester` enum('Ganjil','Genap') NOT NULL,
+
+  `deleted` tinyint(1) DEFAULT 0
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+ALTER TABLE `japel`
+
+  ADD PRIMARY KEY (`id_japel`),
+
+  ADD UNIQUE KEY `unique_jadwal_pro` (`id_kelas`,`id_tahun`,`semester`,`hari`,`jam_mulai`),
+
+  ADD UNIQUE KEY `unique_guru` (`id_guru`,`id_tahun`,`semester`,`hari`,`jam_mulai`),
+
+  ADD KEY `fk_japel_mapel` (`id_mapel`),
+
+  ADD KEY `idx_japel_kelas` (`id_kelas`),
+
+  ADD KEY `idx_japel_tahun_semester` (`id_tahun`,`semester`);
+
+
+
+ALTER TABLE `japel`
+
+  MODIFY `id_japel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+
+
+ALTER TABLE `japel`
+
+  ADD CONSTRAINT `fk_japel_guru` FOREIGN KEY (`id_guru`) REFERENCES `guru` (`id_guru`) ON DELETE CASCADE ON UPDATE CASCADE,
+
+  ADD CONSTRAINT `fk_japel_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`) ON DELETE CASCADE ON UPDATE CASCADE,
+
+  ADD CONSTRAINT `fk_japel_mapel` FOREIGN KEY (`id_mapel`) REFERENCES `mapel` (`id_mapel`) ON DELETE CASCADE ON UPDATE CASCADE,
+
+  ADD CONSTRAINT `fk_japel_tahun` FOREIGN KEY (`id_tahun`) REFERENCES `tahun_ajaran` (`id_tahun`);
+
+COMMIT;
+
+
+
+isi dari tabel menampilkan guru (id_guru), Mapel (id_mapel), kelas (id_kelas), hari, kegiatan (isi nya ditampilkan ketika mencentang di form waktu istirahat), jam (jam mulai - jam selesai), tahun ajaran (id_tahun dan semester dibuat seperti 2022 - ganjil ).
+
+
+
+lalu diatas tabel ada kolom & button untuk search, serta ada tombol tambah ketika ditekan tombol tambah nya muncul pop up untuk mengisi form data jadwal pelajaran baru yang berisi : guru (id_guru dibuat list ), Mapel (id_mapel dibuat list ), kelas (id_kelas dibuat ), hari (dibuat list senin - minggu), jam (jam mulai dan  jam selesai), tahun ajaran (id_tahun dan semester dibuat seperti 2022 - ganjil dibuat list ), nah saya juga mau ada untuk waktu istrirahat menggunakan centang , nah ketika di centang pada (guru, mapel) tidak perlu di isi 
